@@ -210,14 +210,34 @@ pEntry e =
        , entryInReplyTo    = pInReplyTo es
        , entryInReplyTotal = pInReplyTotal es
        , entryAttrs        = other_as (elAttribs e)
-       , entryOther        = [] -- ?
+       , entryOther        = other_es es
        }
  where
-   other_as as = filter (\ a -> not (attrKey a `elem` known_attrs))
-   	                as
+   other_as = filter (\ a -> not (attrKey a `elem` known_attrs))
+   other_es = filter (\ el -> not (elName el `elem` known_elts))
 
     -- let's have them all (including xml:base and xml:lang + xmlns: stuff)
    known_attrs = []
+   known_elts = map atomName
+     [ "author"
+     , "category"
+     , "content"
+     , "contributor"
+     , "generator"
+     , "icon"
+     , "id"
+     , "link"
+     , "logo"
+     , "published"
+     , "rights"
+     , "reply-to"
+     , "source"
+     , "subtitle"
+     , "summary"
+     , "title"
+     , "total"
+     , "updated"
+     ]
 
 pContent :: XML.Element -> Maybe EntryContent
 pContent e =
